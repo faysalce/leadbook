@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import { Layout, Row, Col, Menu, Icon, Radio, Input } from 'antd';
+import { Layout, Row, Col, Menu, Icon, BackTop } from 'antd';
 import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
-import { getSingleContactByID, getContactByCompanyID, getCompanyByRevenue, getContactByName } from "./actions";
 import ErrorBoundary from "../ErrorBoundary";
 
 import ContactsRouter from "./router"
@@ -12,33 +11,28 @@ import '../style.css';
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
-const { Search } = Input;
 
 class Contacts extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            search_pram: 'name_contact',
             logout: false
         };
+        this._isMounted = false;
         this.logOutUser = this.logOutUser.bind(this);
-        this.searchContacts = this.searchContacts.bind(this);
     }
 
     componentDidMount() {
+        this._isMounted = true;
         if (!this.props.auth) {
             this.props.history.push("/login")
         }
     }
-    searchContacts(text) {
-
-
+    componentWillUnmount() {
+        this._isMounted = false;
 
     }
-
-    changeSearchParam(value) {
-        this.setState({ search_pram: value });
-    }
+    
     logOutUser = () => {
 
         this.props.userLogout();
@@ -52,7 +46,9 @@ class Contacts extends Component {
             <Fragment>
                 <Header style={{ background: '#002766' }}>
                     <div className="logo" style={{ float: 'left', width: '120px' }} >
-                        <img style={{ maxWidth: '100%' }} src="https://www.leadbook.com/wp-content/uploads/2018/06/leadbook-logo-light-hi-res.png" alt="Lead book" />
+                    <NavLink to="/contacts/all"> 
+                    <img style={{ maxWidth: '100%' }} src="https://www.leadbook.com/wp-content/uploads/2018/06/leadbook-logo-light-hi-res.png" alt="Lead book" />
+                    </NavLink>
                     </div>
                     <Menu
                         theme="dark"
@@ -71,10 +67,10 @@ class Contacts extends Component {
                             <Menu
                                 mode="inline"
                                 onClick={this.handleClick}
-                                defaultSelectedKeys={['10']}
                                 defaultOpenKeys={['sub1']}
                                 style={{ height: '100%' }}
                                 collapsed="false"
+                                selectedKeys={[window.location.pathname]}
 
                             >
                                 <SubMenu
@@ -86,8 +82,8 @@ class Contacts extends Component {
                                         </span>
                                     }
                                 >
-                                    <Menu.Item key="10"><NavLink to="/contacts/all">All</NavLink></Menu.Item>
-                                    <Menu.Item key="11"><NavLink to="/contacts/favorite">Favorite</NavLink></Menu.Item>
+                                    <Menu.Item key="/contacts/all"><NavLink to="/contacts/all">Contacts</NavLink></Menu.Item>
+                                    <Menu.Item key="/contacts/companies"><NavLink to="/contacts/companies">Companies</NavLink></Menu.Item>
 
                                 </SubMenu>
                             </Menu>
@@ -96,31 +92,12 @@ class Contacts extends Component {
                         <Content style={{ padding: '0 24px', minHeight: 280 }}>
                             <div style={{ minHeight: "calc(100vh - 183px)" }}>
                                 <Row type="flex" justify="center" align="middle">
-                                    <Col span={20}>
+                                    <Col span={26}>
                                         <div style={{ backgroundColor: '#fff' }} >
-                                            <div style={{ padding: '24px', borderBottom: '1px solid #e8e8e8' }}>
-                                                <Row type="flex" justify="end" align="middle">
-                                                    <Col>
-                                                        <Radio.Group onChange={(value) => this.changeSearchParam(value)} defaultValue="name_contact" buttonStyle="solid">
-                                                            <Radio.Button value="contact_id">Contact ID</Radio.Button>
-                                                            <Radio.Button value="company_id">Company ID</Radio.Button>
-                                                            <Radio.Button value="name_contact">Name of Contact</Radio.Button>
-                                                            <Radio.Button value="company_revenue">Revenue</Radio.Button>
-                                                        </Radio.Group>
-                                                    </Col>
-                                                    <Col>
-                                                        <Search
-                                                            placeholder="input search text"
-                                                            onSearch={(value) => this.searchContacts(value)}
-                                                            style={{ width: 200, marginLeft: '8px' }}
-                                                        />
-                                                    </Col>
-
-                                                </Row>
-                                            </div>
+                                          
                                             <div>
                                                 <ErrorBoundary>
-                                                   <ContactsRouter {...this.props}/>
+                                                    <ContactsRouter {...this.props} />
                                                 </ErrorBoundary>
 
 
@@ -137,6 +114,11 @@ class Contacts extends Component {
                         </Content>
                     </Layout>
                 </Content>
+                <div>
+                <BackTop style={{ color: 'rgba(64, 64, 64, 0.6)' }} />
+<strong style={{ color: 'rgba(64, 64, 64, 0.6)' }}>  </strong>
+                </div>
+
 
             </Fragment>
 
@@ -158,10 +140,7 @@ const mapDispatchToState = (dispatch, ownProps) => {
     return {
 
         userLogout: (user, password) => dispatch(userLogout(user, password)),
-        getSingleContactByID: (user, password) => dispatch(getSingleContactByID(user, password)),
-        getContactByCompanyID: (user, password) => dispatch(getContactByCompanyID(user, password)),
-        getCompanyByRevenue: (user, password) => dispatch(getCompanyByRevenue(user, password)),
-        getContactByName: (user, password) => dispatch(getContactByName(user, password)),
+        
 
     };
 };

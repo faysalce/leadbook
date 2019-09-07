@@ -7,7 +7,9 @@ export function allContacts(page) {
     return axios.get(
       apiurl + "contacts",
       {
-        params: {},
+        params: {
+          page:page
+        },
         cancelToken: source.token
 
       }).then(function (response) {
@@ -21,15 +23,16 @@ export function allContacts(page) {
 }
 
 
-export function getSingleContactByID(userID) {
+export function getContactDetailsByID(contactID) {
   return function (dispatch) {
     return axios.get(
-      apiurl + "contacts/" + userID,
+      apiurl + "contacts/" + contactID,
       {
         params: {},
         cancelToken: source.token
       }).then(function (response) {
-        dispatch({ type: 'GET_CONTACT_DETAILS_SUCCESS', payload: response.data })
+       
+        dispatch({ type: 'GET_CONTACT_DETAILS_SUCCESS', payload: response.data.data  })
       }).catch(function (error) {
         dispatch({ type: 'GET_CONTACT_DETAILS_FAIL', payload: error })
       }
@@ -37,53 +40,76 @@ export function getSingleContactByID(userID) {
 
   }
 }
-export function getContactByCompanyID(userID) {
+export function getSingleContactByID(contactID) {
   return function (dispatch) {
     return axios.get(
-      apiurl + "contacts/" + userID,
+      apiurl + "contacts/" + contactID,
       {
-        params: {}, 
+        params: {},
         cancelToken: source.token
-
       }).then(function (response) {
-        dispatch({ type: 'GET_CONTACT_DETAILS_SUCCESS', payload: response.data })
+      
+        dispatch({ type: 'GET_SEARCH_CONTACT_LIST_SUCCESS', payload: [response.data.data] })
       }).catch(function (error) {
-        dispatch({ type: 'GET_CONTACT_DETAILS_FAIL', payload: error })
+        dispatch({ type: 'GET_SEARCH_CONTACT_LIST_FAIL', payload: error })
       }
       );
 
   }
 }
-export function getCompanyByRevenue(userID) {
+export function getContactByCompanyID(companyID) {
   return function (dispatch) {
     return axios.get(
-      apiurl + "contacts/" + userID,
+      apiurl + "contacts",
       {
-        params: {},
+        params: {
+          company_id:companyID
+        }, 
         cancelToken: source.token
 
       }).then(function (response) {
-        dispatch({ type: 'GET_CONTACT_DETAILS_SUCCESS', payload: response.data })
+        dispatch({ type: 'GET_SEARCH_CONTACT_LIST_SUCCESS', payload: response.data.data  })
       }).catch(function (error) {
-        dispatch({ type: 'GET_CONTACT_DETAILS_FAIL', payload: error })
+        dispatch({ type: 'GET_SEARCH_CONTACT_LIST_FAIL', payload: error })
+      }
+      );
+
+  }
+}
+export function getCompanyByRevenue(reveue) {
+  return function (dispatch) {
+    return axios.get(
+      apiurl + "contacts" ,
+      {
+        params: {
+          revenue_gte:reveue
+        },
+        cancelToken: source.token
+
+      }).then(function (response) {
+        dispatch({ type: 'GET_SEARCH_CONTACT_LIST_SUCCESS', payload: response.data.data  })
+      }).catch(function (error) {
+        dispatch({ type: 'GET_SEARCH_CONTACT_LIST_FAIL', payload: error })
       }
       );
 
   }
 }
 
-export function getContactByName(userID) {
+export function getContactByName(name) {
   return function (dispatch) {
     return axios.get(
-      apiurl + "contacts/" + userID,
+      apiurl + "contacts" ,
       {
-        params: {},
+        params: {
+          name:name
+        },
         cancelToken: source.token
 
       }).then(function (response) {
-        dispatch({ type: 'GET_CONTACT_DETAILS_SUCCESS', payload: response.data })
+        dispatch({ type: 'GET_SEARCH_CONTACT_LIST_SUCCESS', payload: response.data.data  })
       }).catch(function (error) {
-        dispatch({ type: 'GET_CONTACT_DETAILS_FAIL', payload: error })
+        dispatch({ type: 'GET_SEARCH_CONTACT_LIST_FAIL', payload: error })
       }
       );
 

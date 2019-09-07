@@ -1,5 +1,5 @@
 import AllContacts from "../AllContacts";
-import FavoriteContacts from "../FavoriteContacts";
+import Companies from "../Companies";
 
 
 
@@ -11,9 +11,15 @@ const routes = [
         component: AllContacts
     },
     {
-        path: "/contacts/favorite",
+        path: "/contact:id",
         exact: true,
-        component: FavoriteContacts
+      
+        component: AllContacts
+    },
+    {
+        path: "/contacts/companies",
+        exact: true,
+        component: Companies
     }
 ];
 

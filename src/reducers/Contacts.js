@@ -28,6 +28,8 @@ let defaultState = {
           error: action.payload
         })
       case 'GET_SEARCH_CONTACT_LIST_SUCCESS':
+            console.log('GET_SEARCH_CONTACT_LIST_SUCCESS:', action.payload);
+
         return Object.assign({}, state, {
             contactsList: action.payload
         })
@@ -40,6 +42,7 @@ let defaultState = {
                 favouritContactsList: action.payload
             })
         case 'GET_FAVOURITE_CONTACT_LIST_FAIL':
+            console.log('GET_FAVOURITE_CONTACT_LIST_FAIL:', action.payload);
             return Object.assign({}, state, {
               error: action.payload
         })
