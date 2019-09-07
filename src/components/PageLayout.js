@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Layout } from 'antd';
 import { connect } from 'react-redux';
-import { withRouter,Switch, Route } from 'react-router-dom';
+import { withRouter, Switch, Route } from 'react-router-dom';
 import Login from "./userAuth/Login"
 import Contacts from "./Contacts";
 import ErrorBoundary from "./ErrorBoundary";
@@ -10,7 +10,7 @@ const { Footer } = Layout;
 
 
 class PageLayout extends Component {
-  
+
   componentDidMount() {
 
     this.props.auth ? this.props.history.push("/contacts/all") : this.props.history.push("/login")
