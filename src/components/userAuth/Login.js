@@ -1,19 +1,48 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Row, Col,Layout } from 'antd';
-const { Content} = Layout;
+import { Form, Icon, Input, Button, Row, Col, Layout } from 'antd';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { userLogin } from "./actions"
+const { Content } = Layout;
 
 
 
-class Login extends Component {
+class LoginFrom extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+
+            auth:false
+        };
+    }
+    componentDidMount(){
+        if(this.props.auth){
+            this.props.history.push("/contacts/all")
+        }
+       
+    }
+
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                if(values.username==='leadbook' && values.password==='123456'){
+                this.props.userLogin(values.username, values.password).then(result => {
+                  
+                        this.setState({ auth:true});
+                        this.props.history.push("/contacts/all")
+                        
+                  
 
-                }
-            }
+
+                }).catch(ex => {
+
+
+                });
+
+                if(this.props.auth){
+                    this.props.history.push("/contacts/all")
+                }            }
         });
     };
     render() {
@@ -23,11 +52,11 @@ class Login extends Component {
             <Content style={{ padding: '50px 50px 0' }}>
 
                 <div style={{ background: '#fff', padding: 24, minHeight: "calc(100vh - 183px)" }}>
-                <div className="logo" style={{textAlign:'center'}} >
-                    <img style={{ maxWidth: '200px',margin:'25px' }} src="https://platform.leadbook.com/static/img/logo-leadbook-long.png" alt="Lead book" />
-                </div>
+                    <div className="logo" style={{ textAlign: 'center' }} >
+                        <img style={{ maxWidth: '200px', margin: '25px' }} src="https://platform.leadbook.com/static/img/logo-leadbook-long.png" alt="Lead book" />
+                    </div>
                     <Row type="flex" justify="center" align="middle">
-                   
+
                         <Col span={6}>
                             <Form onSubmit={this.handleSubmit} className="login-form" >
                                 <Form.Item>
@@ -55,7 +84,7 @@ class Login extends Component {
 
                                     <Button type="primary" htmlType="submit" className="login-form-button" style={{ width: '100%' }}>
                                         Log in
-          </Button>
+                                    </Button>
 
                                 </Form.Item>
                             </Form>
@@ -69,6 +98,25 @@ class Login extends Component {
         );
     }
 }
-export default Login = Form.create({ name: 'register' })(Login);
+const Login = Form.create({ name: 'register' })(LoginFrom);
+
+function mapStateToProps(store) {
+    return {
+        auth: store.user.auth,
+
+    };
+}
+const mapDispatchToState = (dispatch, ownProps) => {
+    return {
+        userLogin: (user, password) => dispatch(userLogin(user, password)),
 
 
+    };
+};
+
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToState
+    )(Login)
+);
