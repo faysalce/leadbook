@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react';
 import { Table, Input, Button, Icon, Radio, Row, Col} from 'antd';
-import { getSingleContactByID, getContactByCompanyID, getCompanyByRevenue, getContactByName } from "./actions";
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import Highlighter from 'react-highlight-words';
 import ErrorBoundary from "../ErrorBoundary"
-import { allContacts } from "./actions";
+import { allContacts, getSingleContactByID, getContactByCompanyID, getCompanyByRevenue, getContactByName } from "./actions";
 import '../style.css'
 const { Search } = Input;
 

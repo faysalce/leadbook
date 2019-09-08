@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { Table, Input, Button, Icon, Row, Col, Drawer } from 'antd';
-import { getSingleContactByID, getContactByCompanyID, getCompanyByRevenue, getContactByName } from "./actions";
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import Highlighter from 'react-highlight-words';
@@ -349,11 +348,7 @@ function mapStateToProps(store) {
 const mapDispatchToState = (dispatch, ownProps) => {
     return {
         allContacts: (page) => dispatch(allContacts(page)),
-        getSingleContactByID: (user, password) => dispatch(getSingleContactByID(user, password)),
-        getContactByCompanyID: (user, password) => dispatch(getContactByCompanyID(user, password)),
-        getCompanyByRevenue: (user, password) => dispatch(getCompanyByRevenue(user, password)),
-        getContactByName: (user, password) => dispatch(getContactByName(user, password)),
-
+        
     };
 };
 
