@@ -38,9 +38,22 @@ class AllContacts extends PureComponent {
         this.setState({
             loading: true,
         });
-        this._isMounted && this.props.allContacts(this.state.page).then(result => {
+        this._isMounted && this.getAllContactsList(this.state.page);
+    }
+    componentWillUnmount() {
+        this._isMounted = false;
+        
+    }
+    onSelectChange = (selectedRowKeys, rows) => {
 
-            this._isMounted && this.setState({
+
+        this.setState({ selectedRowKeys });
+    };
+
+    getAllContactsList(page){
+        this.props.allContacts(page).then(result => {
+
+         this.setState({
                 data: this.props.contactsLis,
                 list: this.props.contactsList,
                 page: this.state.page + 1,
@@ -52,15 +65,6 @@ class AllContacts extends PureComponent {
 
         });
     }
-    componentWillUnmount() {
-        this._isMounted = false;
-
-    }
-    onSelectChange = (selectedRowKeys, rows) => {
-
-
-        this.setState({ selectedRowKeys });
-    };
     searchContacts(text) {
 
         this.setState({
@@ -132,19 +136,7 @@ class AllContacts extends PureComponent {
             }
         } else {
 
-            this._isMounted && this.props.allContacts(this.state.page).then(result => {
-
-                this._isMounted && this.setState({
-                    data: this.props.contactsLis,
-                    list: this.props.contactsList,
-                    page: this.state.page + 1,
-                    loading: false,
-                });
-
-            }).catch(ex => {
-
-
-            });
+            this.getAllContactsList(this.state.page);
         }
 
 
