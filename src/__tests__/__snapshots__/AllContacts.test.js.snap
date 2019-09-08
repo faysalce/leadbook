@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AllContacts renders correctly 1`] = `ShallowWrapper {}`;
+
+exports[`Companies renders correctly 1`] = `ShallowWrapper {}`;
